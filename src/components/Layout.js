@@ -17,6 +17,9 @@ const Layout = () => {
         </ul>
       </nav>
       <Outlet />
+      <footer>
+        <NavLink to="contact">Contact Us</NavLink>
+      </footer>
     </div>
   );
 };
