@@ -9,11 +9,17 @@ const Layout = () => {
             <NavLink to="/">Home</NavLink>
           </li>
           <li>
-            <NavLink to="new-comment">Create Comment</NavLink>
+            <NavLink to="fun">Fun</NavLink>
+          </li>
+          <li>
+            <NavLink to="about">About</NavLink>
           </li>
         </ul>
       </nav>
       <Outlet />
+      <footer>
+        <NavLink to="contact">Contact Us</NavLink>
+      </footer>
     </div>
   );
 };
