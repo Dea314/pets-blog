@@ -1,70 +1,42 @@
-import React from "react";
-import Axios from "axios";
-import { useState } from "react";
+import emailjs from "emailjs-com";
 
 const Contact = () => {
-  const url = "";
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const submit = (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
-    Axios.post(url, {
-      name: data.name,
-      email: data.email,
-      message: data.message,
-    }).then((res) => {
-      console.log(res.data);
-    });
-  };
 
-  const handle = (e) => {
-    const newData = { ...data };
-    newData[e.target.id] = e.target.value;
-    setData(newData);
+    emailjs
+      .sendForm(
+        "service_wbw9jut",
+        "template_p20vgn5",
+        e.target,
+        "LWy6sRSkucf2qHz0M"
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <div>
       <h1>Contact Us</h1>
-      <form onSubmit={(e) => submit(e)}>
+      <form onSubmit={sendEmail}>
         <div>
           <label>
             Your Name
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={data.name}
-              onChange={(e) => handle(e)}
-            />
+            <input type="text" id="name" name="name" />
           </label>
         </div>
         <div>
           <label>
             Your E-Mail
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={data.email}
-              onChange={(e) => handle(e)}
-            />
+            <input type="text" id="user-email" name="user-email" />
           </label>
         </div>
         <div>
           <label>
             Your Message
-            <textarea
-              type="text"
-              id="message"
-              message="message"
-              value={data.message}
-              onChange={(e) => handle(e)}
-            />
+            <textarea type="text" id="message" name="message" />
           </label>
         </div>
         <button type="submit">Send</button>
