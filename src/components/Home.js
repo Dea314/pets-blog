@@ -6,7 +6,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BLOG_API_URL}/posts`) //insert link to posts in .env file after the =
+      .get(`${process.env.REACT_APP_POSTS_API_URL}/posts`) //insert link to posts in .env file after the =
       .then(({ data }) => setPosts(data))
       .catch((err) => console.error(err));
   }, []);
