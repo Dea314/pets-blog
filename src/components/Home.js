@@ -1,14 +1,27 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { createClient } from "contentful";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_POSTS_API_URL}/posts`) //insert link to posts in .env file after the =
-      .then(({ data }) => setPosts(data))
-      .catch((err) => console.error(err));
+    setLoading(true);
+
+    const client = createClient({
+      space: process.env.REACT_APP_SPACE_ID,
+      accessToken: process.env.REACT_APP_ACCESS_TOKEN,
+    });
+    client
+      .getEntries()
+      .then((entries) => {
+        console.log(entries);
+        setPosts(entries.items);
+        console.log(entries.items);
+      })
+      .catch((err) => console.log(err));
+    setLoading(false);
   }, []);
 
   return (
