@@ -24,13 +24,7 @@ const Home = () => {
     setLoading(false);
   }, []);
 
-  return (
-    <div>
-      {posts.map((post) => {
-        <li key={post._id}>{post.title}</li>;
-      })}
-    </div>
-  );
+  return <div>{posts.map((post) => {})}</div>;
 };
 
 export default Home;
