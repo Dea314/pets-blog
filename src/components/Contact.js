@@ -1,4 +1,5 @@
 import emailjs from "emailjs-com";
+import { Box, Button, TextField } from "@mui/material";
 
 const Contact = () => {
   const sendEmail = (e) => {
@@ -19,28 +20,49 @@ const Contact = () => {
 
   return (
     <div>
-      <h1>Contact Us</h1>
-      <form onSubmit={sendEmail}>
-        <div>
-          <label>
-            Your Name
-            <input type="text" id="name" name="name" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Your E-Mail
-            <input type="text" id="user-email" name="user-email" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Your Message
-            <textarea type="text" id="message" name="message" />
-          </label>
-        </div>
-        <button type="submit">Send</button>
-      </form>
+      <Box
+        component="form"
+        onSubmit={sendEmail}
+        sx={{
+          width: 300,
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignContent: "center",
+        }}
+      >
+        <h1>Contact Us</h1>
+        <TextField
+          type="text"
+          id="name"
+          name="name"
+          label="Your Name"
+          required
+          size="small"
+          margin="normal"
+        />
+        <TextField
+          type="text"
+          id="user-email"
+          name="user-email"
+          label="Your E-Mail"
+          required
+          size="small"
+          margin="normal"
+        />
+        <TextField
+          multiline
+          type="text"
+          id="message"
+          name="message"
+          label="Your Message"
+          required
+          margin="normal"
+        />
+        <Button type="submit" variant="contained" disableElevation>
+          Send
+        </Button>
+      </Box>
     </div>
   );
 };
