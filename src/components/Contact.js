@@ -1,54 +1,90 @@
+import { useState } from "react";
 import emailjs from "emailjs-com";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 const Contact = () => {
-  const sendEmail = (e) => {
-    e.preventDefault();
+  const [{ name, user_email, message }, setFormState] = useState({
+    name: "",
+    user_email: "",
+    message: "",
+  });
 
-    emailjs
-      .sendForm(
-        "service_wbw9jut",
-        "template_p20vgn5",
+  const [errors, setErrors] = useState(null);
+
+  const handleInputChange = (e) => {
+    setErrors(null);
+    setFormState((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  };
+
+  const sendEmail = async (e) => {
+    try {
+      e.preventDefault();
+      if (!name || !user_email || !message) {
+        if (!name) {
+          setErrors((prev) => ({ ...prev, name: "Name is required" }));
+        }
+        if (!user_email) {
+          setErrors((prev) => ({ ...prev, user_email: "Email is required" }));
+        }
+        if (!message) {
+          setErrors((prev) => ({ ...prev, message: "Message is required" }));
+        }
+        return;
+      }
+      const res = await emailjs.sendForm(
+        process.env.REACT_APP_SERVICE_ID,
+        process.env.REACT_APP_TEMPLATE_ID,
         e.target,
-        "LWy6sRSkucf2qHz0M"
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+        process.env.REACT_APP_USER_ID
+      );
+      console.log(res);
+      setFormState({ name: "", user_email: "", message: "" });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div>
       <Box
+        m="auto"
         component="form"
         onSubmit={sendEmail}
         sx={{
-          width: 300,
+          width: "50%",
+          marginTop: "50px",
           justifyContent: "center",
           display: "flex",
           flexDirection: "column",
           alignContent: "center",
         }}
       >
-        <h1>Contact Us</h1>
+        <Typography variant="h3" align="center">
+          Contact Us
+        </Typography>
         <TextField
           type="text"
           id="name"
           name="name"
           label="Your Name"
-          required
           size="small"
           margin="normal"
+          value={name}
+          onChange={handleInputChange}
+          error={Boolean(errors?.name)}
+          helperText={errors?.name}
         />
         <TextField
-          type="text"
-          id="user-email"
-          name="user-email"
+          type="email"
+          id="user_email"
+          name="user_email"
           label="Your E-Mail"
-          required
           size="small"
           margin="normal"
+          value={user_email}
+          onChange={handleInputChange}
+          error={Boolean(errors?.user_email)}
+          helperText={errors?.user_email}
         />
         <TextField
           multiline
@@ -56,10 +92,13 @@ const Contact = () => {
           id="message"
           name="message"
           label="Your Message"
-          required
           margin="normal"
+          value={message}
+          onChange={handleInputChange}
+          error={Boolean(errors?.message)}
+          helperText={errors?.message}
         />
-        <Button type="submit" variant="contained" disableElevation>
+        <Button type="submit" variant="contained" disableElevation size="large">
           Send
         </Button>
       </Box>
