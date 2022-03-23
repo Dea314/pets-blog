@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createClient } from "contentful";
-import { Box, width } from "@mui/system";
+import { Box } from "@mui/system";
 import {
   Card,
   CardActionArea,
@@ -8,9 +8,19 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { Link } from "react-router-dom";
+import { makeStyles } from "@mui/styles";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+
+const useStyles = makeStyles((theme) => ({
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+  },
+}));
 
 const Home = () => {
+  const classes = useStyles();
   const [posts, setPosts] = useState([]);
 
   const client = createClient({
@@ -36,20 +46,25 @@ const Home = () => {
       }}
     >
       {posts?.map((post) => (
-        <Card key={post.id} sx={{ maxWidth: 345 }}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height="200"
-              image={post.fields.img.fields.file.url}
-              alt={post.fields.title}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5">
-                {post.fields.title}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
+        <Card key={post.sys.id} sx={{ maxWidth: 345 }}>
+          <Link to={`/post/${post.sys.id}`} className={classes.link}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="200"
+                image={post.fields.img.fields.file.url}
+                alt={post.fields.title}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5">
+                  {post.fields.title}
+                </Typography>
+                <Typography>
+                  {documentToReactComponents(post.fields.content)}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Link>
         </Card>
       ))}
     </Box>
