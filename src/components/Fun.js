@@ -9,6 +9,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import axios from "axios";
 
 const Fun = () => {
   const [pets, setPets] = useState([]);
@@ -17,18 +18,22 @@ const Fun = () => {
 
   useEffect(() => {
     setLoading(true);
+    axios.get("http://localhost:5050").then((resp) => {
+      console.log(resp.data).catch((err) => console.log(err));
+    });
 
-    client
-      .getEntries({ content_type: "petsBlog" })
-      .then((res) => {
-        console.log(res);
-        setPets(res.items);
-        console.log(res.items);
-      })
-      .catch((err) => console.log(err));
+    // client
+    //   .getEntries({ content_type: "petsBlog" })
+    //   .then((res) => {
+    //     console.log(res);
+    //     setPets(res.items);
+    //     console.log(res.items);
+    //   })
+    // .catch((err) => console.log(err));
     setLoading(false);
   }, []);
-  console.log("pets", pets);
+  // console.log("pets", pets);
+  // const postDescription = pets.fields.description;
   return (
     <div>
       <Typography variant="h3" align="center" marginTop="50px">
@@ -45,7 +50,7 @@ const Fun = () => {
         }}
       >
         {/* <Typography gutterBottom variant="h5" component="div"> */}
-        {pets?.map((pet, index) => (
+        {/* {pets?.map((pet, index) => (
           <Card key={index} sx={{ maxWidth: 345 }}>
             <CardActionArea>
               <CardMedia
@@ -59,11 +64,13 @@ const Fun = () => {
                 <Typography gutterBottom variant="h5">
                   {pet.fields.blogImage.fields.title}
                 </Typography>
-                <Typography>{pet.fields.description}</Typography>
+                <Typography key={index}>
+                  <section dangerouslySetInnerHTML={{ postDescription }} />
+                </Typography>
               </CardContent>
             </CardActionArea>
           </Card>
-        ))}
+        ))} */}
       </Box>
     </div>
   );
