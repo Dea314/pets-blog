@@ -36,7 +36,7 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
   }, []);
-  console.log(posts);
+
   return (
     <Box
       sx={{
@@ -59,9 +59,7 @@ const Home = () => {
                 <Typography gutterBottom variant="h5">
                   {post.fields.title}
                 </Typography>
-                <Typography>
-                  {documentToReactComponents(post.fields.content)}
-                </Typography>
+                {documentToReactComponents(post.fields.content)}
               </CardContent>
             </CardActionArea>
           </Link>
