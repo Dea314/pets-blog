@@ -1,5 +1,4 @@
 import React from "react";
-import { client } from "./Client";
 import { useState, useEffect } from "react";
 import { Box, positions } from "@mui/system";
 import {
@@ -13,27 +12,16 @@ import axios from "axios";
 
 const Fun = () => {
   const [pets, setPets] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
-    axios.get("http://localhost:5050").then((resp) => {
-      console.log(resp.data).catch((err) => console.log(err));
-    });
-
-    // client
-    //   .getEntries({ content_type: "petsBlog" })
-    //   .then((res) => {
-    //     console.log(res);
-    //     setPets(res.items);
-    //     console.log(res.items);
-    //   })
-    // .catch((err) => console.log(err));
-    setLoading(false);
+    axios
+      .get("http://localhost:5050")
+      .then(({ data }) => {
+        setPets(data);
+      })
+      .catch((err) => console.log(err));
   }, []);
-  // console.log("pets", pets);
-  // const postDescription = pets.fields.description;
+
   return (
     <div>
       <Typography variant="h3" align="center" marginTop="50px">
@@ -49,28 +37,25 @@ const Fun = () => {
           flexWrap: "wrap",
         }}
       >
-        {/* <Typography gutterBottom variant="h5" component="div"> */}
-        {/* {pets?.map((pet, index) => (
+        {pets?.map((pet, index) => (
           <Card key={index} sx={{ maxWidth: 345 }}>
             <CardActionArea>
-              <CardMedia
+              {/* <CardMedia
                 component="img"
                 width={"400px"}
                 align={"center"}
                 src={`http:${pet.fields.blogImage.fields.file.url}`}
                 alt="pets"
-              />
+              /> */}
               <CardContent>
                 <Typography gutterBottom variant="h5">
-                  {pet.fields.blogImage.fields.title}
+                  {pet.name}
                 </Typography>
-                <Typography key={index}>
-                  <section dangerouslySetInnerHTML={{ postDescription }} />
-                </Typography>
+                <Typography key={index}></Typography>
               </CardContent>
             </CardActionArea>
           </Card>
-        ))} */}
+        ))}
       </Box>
     </div>
   );

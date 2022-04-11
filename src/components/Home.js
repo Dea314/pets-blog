@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { createClient } from "contentful";
 import { Box } from "@mui/system";
 import {
   Card,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -23,16 +22,11 @@ const Home = () => {
   const classes = useStyles();
   const [posts, setPosts] = useState([]);
 
-  const client = createClient({
-    space: process.env.REACT_APP_SPACE_ID,
-    accessToken: process.env.REACT_APP_ACCESS_TOKEN,
-  });
-
   useEffect(() => {
-    client
-      .getEntries({ content_type: "home" })
-      .then((entries) => {
-        setPosts(entries.items);
+    axios
+      .get("http://localhost:5050")
+      .then(({ data }) => {
+        setPosts(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -46,20 +40,19 @@ const Home = () => {
       }}
     >
       {posts?.map((post) => (
-        <Card key={post.sys.id} sx={{ maxWidth: 345 }}>
-          <Link to={`/post/${post.sys.id}`} className={classes.link}>
+        <Card key={post.id} sx={{ maxWidth: 345 }}>
+          <Link to={`/post/${post.id}`} className={classes.link}>
             <CardActionArea>
-              <CardMedia
+              {/* <CardMedia
                 component="img"
                 height="200"
                 image={post.fields.img.fields.file.url}
-                alt={post.fields.title}
-              />
+                alt={post.name}
+              /> */}
               <CardContent>
                 <Typography gutterBottom variant="h5">
-                  {post.fields.title}
+                  {post.name}
                 </Typography>
-                {documentToReactComponents(post.fields.content)}
               </CardContent>
             </CardActionArea>
           </Link>
